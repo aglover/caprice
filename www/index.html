@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title></title>
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+	<meta charset="utf-8">
+	
+	<script type="text/javascript" src="js/phonegap-1.2.0.js" charset="utf-8"/></script>
+	<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+    <script type="text/javascript" src="js/json2.js" charset="utf-8"></script>    
+	<script type="application/x-javascript" src="js/jqtouch.js" charset="utf-8"></script>
+	
+	<script type="text/javascript">
+	   if (navigator.userAgent.indexOf('iPhone') != -1) {
+	      document.write('<link rel="stylesheet" href="themes/apple/theme.css" type="text/css" />');
+	   } else if (navigator.userAgent.indexOf('Android') != -1) {
+	      document.write('<link rel="stylesheet" href="themes/jqt/theme.css" type="text/css" />');
+	   } else {
+	      document.write('<link rel="stylesheet" href="themes/jqt/theme.css" type="text/css" />');
+	   }
+	</script>
+	
+	<link rel="stylesheet" href="css/jqtouch.css" />
+    <script type="text/javascript">
+
+	var userAgent = navigator.userAgent.toLowerCase();
+	var isiPhone = (userAgent.indexOf('iphone') != -1 || userAgent.indexOf('ipod') != -1) ? true : false;
+	var themeagent = isiPhone ? 'apple' : 'jqt';
+	
+    $.jQTouch({
+	    icon: 'jqtouch.png',
+		addGlossToIcon: true,
+		statusBar: 'black',
+	    preloadImages: [
+	        "themes/" + themeagent + "/img/activeButton.png",
+	        "themes/" + themeagent + "/img/whiteButton.png"
+	        ]
+	});
+    
+	$(document).ready(function() {
+	   	$('#postit').bind('tap', function(){ 
+			sendPicture(); 
+		});
+	 });
+
+    function onBodyLoad(){		
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+    
+    function onDeviceReady(){
+        takePicture();
+    }
+        
+	function takePicture() {
+  		console.log("test");
+      	navigator.device.capture.captureImage(captureSuccess, captureError, {limit: 1});
+	}
+	
+	function captureSuccess(mediaFiles) {
+		$('#picture').replaceWith("<div id=\"picture\"><center><img style=\"width:160px;height:230px\" "+ 
+			"id=\"snap_it_image\" src=\"" + mediaFiles[0].fullPath + "\"/></center></div>");
+    }
+
+
+	function captureError(error) {
+		var msg = 'An error occurred during capture: ' + error.code;
+        navigator.notification.alert(msg, null, 'Uh oh!');
+	}
+	
+	
+    function sendPicture(){
+    	var path = $('#snap_it_image').attr('src');
+		$('#abutton').replaceWith("<div class=\"abutton\"><a style=\"margin:0 10px;color:rgba(0,0,0,.9)\" "+
+			"href=\"#\" id=\"postit\" class=\"whiteButton submit\">Post it</a></div>");
+	        // 	        $('#picit').replaceWith("<div id=\"picit\">Picture sent to server! Take another?</div>");
+	        // 	        $('#bttn').replaceWith("<div id=\"bttn\">" +
+	        // 	                               "<div data-theme=\"c\" class=\"ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c\" aria-disabled=\"false\">" +
+	        // 	                               "<span class=\"ui-btn-inner ui-btn-corner-all\" aria-hidden=\"true\"><span class=\"ui-btn-text\">Snap a pic</span></span>" +
+	        // 	                               "<button onclick=\"takePicture();\" class=\"ui-btn-hidden\" aria-disabled=\"false\">Snap a pic</button></div>" +  
+	        // 	                               "</div>");
+	 }
+    </script>
+  </head>
+  <body id="doc_body" onload="onBodyLoad()">
+      <div id="jqt">
+            <div id="home">
+                <div class="toolbar">
+                    <h1>Snap it!</h1>
+                </div>
+				<div id="picture"></div>
+                <ul class="rounded">
+                    <li><input type="text" name="name" placeholder="Text" id="description" /></li>
+                </ul>
+				<div id="abutton">
+					<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#" id="postit" class="whiteButton submit">Post it</a>
+				</div>
+            </div>
+		</div>
+	</div>
+  </body>
+</html>

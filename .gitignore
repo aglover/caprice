@@ -1,0 +1,9 @@
+android/bin
+android/assets/www/
+ios/snapitios/www/
+.DS_Store
+*.tmproj
+build/*
+*.pbxuser
+*.mode1v3
+profile
