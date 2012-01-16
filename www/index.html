@@ -47,6 +47,11 @@
     function onBodyLoad(){		
         document.addEventListener("deviceready", onDeviceReady, false);
     }
+        
+    function touchMove(event) {
+        // Prevent scrolling on this element
+        event.preventDefault();
+    }
     
     function onDeviceReady(){
         takePicture();
@@ -82,7 +87,7 @@
 	 }
     </script>
   </head>
-  <body id="doc_body" onload="onBodyLoad()">
+  <body id="doc_body" onload="onBodyLoad()" ontouchmove="touchMove(event);">
       <div id="jqt">
             <div id="home">
                 <div class="toolbar">
